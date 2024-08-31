@@ -45,6 +45,10 @@ func newRouter(s *Server) *gin.Engine {
 	spyFamilyGroup := router.Group("/spyfamily")
 	applyRoutes(spyFamilyGroup, s.getSpyFamilyRoute())
 
+	kuroumiGroup := router.Group("/kuromi")
+	applyRoutes(kuroumiGroup, s.getKuromiRoute())
+	applyRoutes(kuroumiGroup, s.postKuromiRoute())
+
 	return router
 }
 
