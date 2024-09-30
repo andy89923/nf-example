@@ -37,11 +37,6 @@ func (s *Server) getSAORoute() []Route {
 			// Use
 			// curl -X GET http://127.0.0.163:8000/sao/list -w "\n"
 		},
-	}
-}
-
-func (s *Server) postSAORoute() []Route {
-	return []Route{
 		{
 			Name:    "Create SAO Character",
 			Method:  http.MethodPost,

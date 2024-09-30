@@ -47,7 +47,6 @@ func newRouter(s *Server) *gin.Engine {
 
 	saoGroup := router.Group("/sao")
 	applyRoutes(saoGroup, s.getSAORoute())
-	applyRoutes(saoGroup, s.postSAORoute())
 
 	return router
 }
