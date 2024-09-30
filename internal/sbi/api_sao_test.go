@@ -3,16 +3,16 @@ package sbi_test
 import (
 	"net/http"
 	"net/http/httptest"
-	"testing"
 	"strings"
-	
+	"testing"
+
 	"github.com/andy89923/nf-example/internal/sbi"
 	"github.com/andy89923/nf-example/pkg/factory"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/mock/gomock"
 )
 
-func Test_getSAORoute(t *testing.T){
+func Test_getSAORoute(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	mockCtrl := gomock.NewController(t)
@@ -25,7 +25,7 @@ func Test_getSAORoute(t *testing.T){
 		},
 	}).AnyTimes()
 	server := sbi.NewServer(nfApp, "")
-	
+
 	t.Run("Welcome", func(t *testing.T) {
 		const EXPECTED_STATUS = http.StatusOK
 		const EXPECTED_BODY = "Welcome to SAO!"
@@ -39,7 +39,7 @@ func Test_getSAORoute(t *testing.T){
 			t.Errorf("Failed to create request: %s", err)
 			return
 		}
-		
+
 		server.WelcomeSAO(ginCtx)
 
 		if httpRecorder.Code != EXPECTED_STATUS {
@@ -50,7 +50,7 @@ func Test_getSAORoute(t *testing.T){
 			t.Errorf("Expected body %s, got %s", EXPECTED_BODY, httpRecorder.Body.String())
 		}
 	})
-	
+
 	t.Run("Create Character", func(t *testing.T) {
 		const EXPECTED_STATUS = http.StatusOK
 		const CHARACTER_NAME = "Kirito"
@@ -60,12 +60,13 @@ func Test_getSAORoute(t *testing.T){
 		ginCtx, _ := gin.CreateTestContext(httpRecorder)
 
 		var err error
-		ginCtx.Request, err = http.NewRequest("POST", "/sao/character", strings.NewReader(`{"name":"` + CHARACTER_NAME + `"}`))
+		jsonBody := `{"name":"` + CHARACTER_NAME + `"}`
+		ginCtx.Request, err = http.NewRequest("POST", "/sao/character", strings.NewReader(jsonBody))
 		if err != nil {
 			t.Errorf("Failed to create request: %s", err)
 			return
 		}
-		
+
 		server.CreateSAOCharacter(ginCtx)
 
 		if httpRecorder.Code != EXPECTED_STATUS {
@@ -76,7 +77,7 @@ func Test_getSAORoute(t *testing.T){
 			t.Errorf("Expected body %s, got %s", EXPECTED_BODY, httpRecorder.Body.String())
 		}
 	})
-	
+
 	t.Run("List Character", func(t *testing.T) {
 		const EXPECTED_STATUS = http.StatusOK
 		const EXPECTED_BODY = "SAO Character List : Kirito"
@@ -90,7 +91,7 @@ func Test_getSAORoute(t *testing.T){
 			t.Errorf("Failed to create request: %s", err)
 			return
 		}
-		
+
 		server.ListSAOCharacter(ginCtx)
 
 		if httpRecorder.Code != EXPECTED_STATUS {
@@ -101,5 +102,4 @@ func Test_getSAORoute(t *testing.T){
 			t.Errorf("Expected body %s, got %s", EXPECTED_BODY, httpRecorder.Body.String())
 		}
 	})
-	
 }

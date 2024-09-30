@@ -44,15 +44,15 @@ func (s *Server) getSAORoute() []Route {
 	}
 }
 
-func (s *Server) WelcomeSAO(c *gin.Context){
+func (s *Server) WelcomeSAO(c *gin.Context) {
 	c.String(http.StatusOK, "Welcome to SAO!")
 }
 
-func (s *Server) ListSAOCharacter(c *gin.Context){
+func (s *Server) ListSAOCharacter(c *gin.Context) {
 	c.String(http.StatusOK, "SAO Character List : "+strings.Join(list.Characters, ", "))
 }
 
-func (s *Server) CreateSAOCharacter(c *gin.Context){
+func (s *Server) CreateSAOCharacter(c *gin.Context) {
 	var character struct {
 		Name string `json:"name"`
 	}
