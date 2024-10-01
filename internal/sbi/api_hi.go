@@ -27,10 +27,10 @@ func (s *Server) getHiRoute() []Route {
 	}
 }
 
-func(s *Server)SayHello(c *gin.Context) {
+func (s *Server) SayHello(c *gin.Context) {
 	c.String(http.StatusOK, "Hello!\n")
 }
 
-func(s *Server)SayGoodBye(c *gin.Context) {
+func (s *Server) SayGoodBye(c *gin.Context) {
 	c.String(http.StatusOK, "Good-bye!\n")
 }
