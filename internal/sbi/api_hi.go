@@ -8,14 +8,28 @@ import (
 func (s *Server) getHiRoute() []Route {
 	return []Route {
 		{
-			Name: "Hi",
+			Name: "sayHello",
 			Method: http.MethodGet,
 			Pattern: "/",
-			APIFunc: func(c *gin.Context) {
-				c.JSON(http.StatusOK, "Today is a good day.")
-			},
+			APIFunc: s.SayHello,
 			// Use
 			// curl -X GET http://127.0.0.163:8000/hi/ -w "\n"
 		},
+		{
+			Name: "sayGoodBye",
+			Method: http.MethodPost,
+			Pattern: "/",
+			APIFunc: s.SayGoodBye,
+			// Use
+			// curl -X POST http://127.0.0.163:8000/hi/ -w "\n"
+		},
 	}
+}
+
+func(s *Server)SayHello(c *gin.Context) {
+	c.String(http.StatusOK, "Hello!\n")
+}
+
+func(s *Server)SayGoodBye(c *gin.Context) {
+	c.String(http.StatusOK, "Good-bye!\n")
 }
