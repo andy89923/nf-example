@@ -45,24 +45,20 @@ func newRouter(s *Server) *gin.Engine {
 	spyFamilyGroup := router.Group("/spyfamily")
 	applyRoutes(spyFamilyGroup, s.getSpyFamilyRoute())
 
-<<<<<<< HEAD
-=======
 	hi_Group := router.Group("/hi")
 	applyRoutes(hi_Group, s.getHiRoute())
->>>>>>> 6ce83dd (fix: golangci-lint problem)
+	
 	stu113Group := router.Group("/stu113")
 	applyRoutes(stu113Group, s.getStu113Route())
 
 	saoGroup := router.Group("/sao")
 	applyRoutes(saoGroup, s.getSAORoute())
-<<<<<<< HEAD
 
 	kuroumiGroup := router.Group("/kuromi")
 	applyRoutes(kuroumiGroup, s.getKuromiRoute())
+
 	hi_Group := router.Group("/hi")
 	applyRoutes(hi_Group, s.getHiRoute())
-=======
->>>>>>> 6ce83dd (fix: golangci-lint problem)
 
 	return router
 }
