@@ -54,6 +54,9 @@ func newRouter(s *Server) *gin.Engine {
 	kuroumiGroup := router.Group("/kuromi")
 	applyRoutes(kuroumiGroup, s.getKuromiRoute())
 
+	// 添加新的路由組
+	newServiceGroup := router.Group("/newservice")
+	applyRoutes(newServiceGroup, s.getNewServiceRoute())
 	return router
 }
 
