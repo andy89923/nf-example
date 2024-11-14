@@ -14,7 +14,6 @@ import (
 
 func Test_getNewServiceRoute(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-
 	// 設置 mock
 	mockCtrl := gomock.NewController(t)
 	nfApp := sbi.NewMocknfApp(mockCtrl)

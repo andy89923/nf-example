@@ -35,7 +35,6 @@ func (s *Server) HTTPGetNewServiceInfo(c *gin.Context) {
 		"message": "This is the GET method of the new service",
 		"service": "NewService",
 	})
-
 }
 
 func (s *Server) HTTPPostNewServiceData(c *gin.Context) {
