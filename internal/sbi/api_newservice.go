@@ -23,7 +23,8 @@ func (s *Server) getNewServiceRoute() []Route {
 			Pattern: "/data",
 			APIFunc: s.HTTPPostNewServiceData,
 			// Use
-			// curl -X POST -H "Content-Type: application/json" -d '{"name":"Test User"}' http://127.0.0.163:8000/newservice/data -w "\n"
+			// curl -X POST -H "Content-Type: application/json"
+			//-d '{"name":"Test User"}' http://127.0.0.163:8000/newservice/data -w "\n"
 		},
 	}
 }

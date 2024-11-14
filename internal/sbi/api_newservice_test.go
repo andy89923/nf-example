@@ -1,54 +1,83 @@
-package sbi
+package sbi_test
 
 import (
-	"bytes"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
+	"github.com/andy89923/nf-example/internal/sbi"
+	"github.com/andy89923/nf-example/pkg/factory"
 	"github.com/gin-gonic/gin"
-	"github.com/stretchr/testify/assert"
+	"go.uber.org/mock/gomock"
 )
 
-// 模擬 Server 結構
-type mockServer struct {
-	Server
-}
-
-func TestHTTPGetNewServiceInfo(t *testing.T) {
+func Test_getNewServiceRoute(t *testing.T) {
 	gin.SetMode(gin.TestMode)
-	s := &mockServer{}
-	r := gin.Default()
-	r.GET("/info", s.HTTPGetNewServiceInfo)
 
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("GET", "/info", nil)
-	r.ServeHTTP(w, req)
+	// 設置 mock
+	mockCtrl := gomock.NewController(t)
+	nfApp := sbi.NewMocknfApp(mockCtrl)
+	nfApp.EXPECT().Config().Return(&factory.Config{
+		Configuration: &factory.Configuration{
+			Sbi: &factory.Sbi{
+				Port: 8000,
+			},
+		},
+	}).AnyTimes()
+	server := sbi.NewServer(nfApp, "")
 
-	assert.Equal(t, 200, w.Code)
-	var response map[string]string
-	json.Unmarshal(w.Body.Bytes(), &response)
-	assert.Equal(t, "This is the GET method of the new service", response["message"])
-	assert.Equal(t, "NewService", response["service"])
-}
+	t.Run("Get Info", func(t *testing.T) {
+		const EXPECTED_STATUS = http.StatusOK
+		const EXPECTED_MESSAGE = "This is the GET method of the new service"
+		const EXPECTED_SERVICE = "NewService"
 
-func TestHTTPPostNewServiceData(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-	s := &mockServer{}
-	r := gin.Default()
-	r.POST("/data", s.HTTPPostNewServiceData)
+		httpRecorder := httptest.NewRecorder()
+		ginCtx, _ := gin.CreateTestContext(httpRecorder)
 
-	data := map[string]string{"name": "Test User"}
-	jsonData, _ := json.Marshal(data)
-	w := httptest.NewRecorder()
-	req, _ := http.NewRequest("POST", "/data", bytes.NewBuffer(jsonData))
-	req.Header.Set("Content-Type", "application/json")
-	r.ServeHTTP(w, req)
+		var err error
+		ginCtx.Request, err = http.NewRequest("GET", "/newservice/info", nil)
+		if err != nil {
+			t.Errorf("Failed to create request: %s", err)
+			return
+		}
 
-	assert.Equal(t, 200, w.Code)
-	var response map[string]string
-	json.Unmarshal(w.Body.Bytes(), &response)
-	assert.Equal(t, "Data received", response["message"])
-	assert.Equal(t, "Test User", response["name"])
+		server.HTTPGetNewServiceInfo(ginCtx)
+
+		if httpRecorder.Code != EXPECTED_STATUS {
+			t.Errorf("Expected status code %d, got %d", EXPECTED_STATUS, httpRecorder.Code)
+		}
+
+		expectedBody := `{"message":"` + EXPECTED_MESSAGE + `","service":"` + EXPECTED_SERVICE + `"}`
+		if httpRecorder.Body.String() != expectedBody {
+			t.Errorf("Expected body %s, got %s", expectedBody, httpRecorder.Body.String())
+		}
+	})
+
+	t.Run("Post Data", func(t *testing.T) {
+		const EXPECTED_STATUS = http.StatusOK
+		const TEST_NAME = "Test User"
+
+		httpRecorder := httptest.NewRecorder()
+		ginCtx, _ := gin.CreateTestContext(httpRecorder)
+
+		var err error
+		jsonBody := `{"name":"` + TEST_NAME + `"}`
+		ginCtx.Request, err = http.NewRequest("POST", "/newservice/data", strings.NewReader(jsonBody))
+		if err != nil {
+			t.Errorf("Failed to create request: %s", err)
+			return
+		}
+		ginCtx.Request.Header.Set("Content-Type", "application/json")
+
+		server.HTTPPostNewServiceData(ginCtx)
+
+		if httpRecorder.Code != EXPECTED_STATUS {
+			t.Errorf("Expected status code %d, got %d", EXPECTED_STATUS, httpRecorder.Code)
+		}
+		expectedBody := `{"message":"Data received","name":"` + TEST_NAME + `"}`
+		if httpRecorder.Body.String() != expectedBody {
+			t.Errorf("Expected body %s, got %s", expectedBody, httpRecorder.Body.String())
+		}
+	})
 }
