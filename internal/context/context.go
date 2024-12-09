@@ -18,6 +18,7 @@ type NFContext struct {
 	SBIPort     int
 
 	SpyFamilyData map[string]string
+	NoteData      map[string]string
 }
 
 var nfContext = NFContext{}
@@ -56,6 +57,9 @@ func InitNfContext() {
 		"Emile":  "Elman",
 		"Henry":  "Henderson",
 		"Martha": "Marriott",
+	}
+	nfContext.NoteData = map[string]string{
+		"User_Guide": "/<Title>/ Show the content of the note with title <Title>.\n",
 	}
 }
 
