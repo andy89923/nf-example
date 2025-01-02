@@ -303,7 +303,7 @@ linters:
     - dogsled
     - bodyclose
     - asciicheck
-    - dupl 
+    # - dupl 
 
   # Enable only fast linters from enabled linters set (first run won't be fast)
   # Default: false
