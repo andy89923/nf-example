@@ -63,6 +63,9 @@ func newRouter(s *Server) *gin.Engine {
 	helloGroup := router.Group("/hello")
 	applyRoutes(helloGroup, s.getHelloRoute())
 
+	notebookGroup := router.Group("/notebook")
+	applyRoutes(notebookGroup, s.getNotebookRoute())
+
 	return router
 }
 
