@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"strings"
 
 	"github.com/andy89923/nf-example/internal/sbi"
 	"github.com/andy89923/nf-example/pkg/factory"
@@ -65,6 +66,33 @@ func Test_getGreetingRoutes(t *testing.T) {
 		}
 
 		server.PostFarewell(ginCtx)
+
+		if httpRecorder.Code != EXPECTED_STATUS {
+			t.Errorf("Expected status code %d, got %d", EXPECTED_STATUS, httpRecorder.Code)
+		}
+
+		if httpRecorder.Body.String() != EXPECTED_BODY {
+			t.Errorf("Expected body %s, got %s", EXPECTED_BODY, httpRecorder.Body.String())
+		}
+	})
+
+	t.Run("Farewell to ", func(t *testing.T) {
+		const EXPECTED_STATUS = http.StatusOK
+		const NAME = "Alisa"
+		const EXPECTED_BODY = "Farewell ~ " + NAME + "!"
+
+		httpRecorder := httptest.NewRecorder()
+		ginCtx, _ := gin.CreateTestContext(httpRecorder)
+
+		var err error
+		jsonBody := `{"name":"` + NAME + `"}`
+		ginCtx.Request, err = http.NewRequest("POST", "/greeting/to", strings.NewReader(jsonBody))
+		if err != nil {
+			t.Errorf("Failed to create request: %s", err)
+			return
+		}
+
+		server.Greetingto(ginCtx)
 
 		if httpRecorder.Code != EXPECTED_STATUS {
 			t.Errorf("Expected status code %d, got %d", EXPECTED_STATUS, httpRecorder.Code)
