@@ -3,8 +3,8 @@ package sbi_test
 import (
 	"net/http"
 	"net/http/httptest"
-	"testing"
 	"strings"
+	"testing"
 
 	"github.com/andy89923/nf-example/internal/sbi"
 	"github.com/andy89923/nf-example/pkg/factory"
@@ -76,7 +76,7 @@ func Test_getGreetingRoutes(t *testing.T) {
 		}
 	})
 
-	t.Run("Farewell to ", func(t *testing.T) {
+	t.Run("Farewell to", func(t *testing.T) {
 		const EXPECTED_STATUS = http.StatusOK
 		const NAME = "Alisa"
 		const EXPECTED_BODY = "Farewell ~ " + NAME + "!"

@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var name_list struct {
-	someone_name []string
+var namelist struct {
+	firstname []string
 }
 
 func (s *Server) getGreetingRoute() []Route {
@@ -58,6 +58,6 @@ func (s *Server) Greetingto(c *gin.Context) {
 		return
 	}
 
-	name_list.someone_name = append(name_list.someone_name, names.Name)
+	namelist.firstname = append(namelist.firstname, names.Name)
 	c.String(http.StatusOK, "Farewell ~ "+names.Name+"!")
 }
