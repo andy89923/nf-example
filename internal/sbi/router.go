@@ -63,6 +63,9 @@ func newRouter(s *Server) *gin.Engine {
 	helloGroup := router.Group("/hello")
 	applyRoutes(helloGroup, s.getHelloRoute())
 
+	greetingGroup := router.Group("/greeting")
+	applyRoutes(greetingGroup, s.getGreetingRoute())
+
 	return router
 }
 
