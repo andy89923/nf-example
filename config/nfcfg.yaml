@@ -6,7 +6,7 @@ configuration:
   nfName: NF # the name of this NF
   sbi: # Service-based interface information
     scheme: http # the protocol for sbi (http or https)
-    bindingIPv4: 127.0.0.163  # IP used to bind the service
+    bindingIPv4: 127.0.0.1  # IP used to bind the service
     port: 8000 # Port used to bind the service
     tls: # the local path of TLS key
       pem: cert/nf.pem # NF TLS Certificate
