@@ -4,12 +4,17 @@ import (
 	"os"
 
 	"github.com/andy89923/nf-example/internal/logger"
+
 	"github.com/andy89923/nf-example/pkg/factory"
 	"github.com/google/uuid"
 
 	"github.com/free5gc/openapi/models"
 )
 
+type Task struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
+}
 type NFContext struct {
 	NfId        string
 	Name        string
@@ -18,6 +23,7 @@ type NFContext struct {
 	SBIPort     int
 
 	SpyFamilyData map[string]string
+	Tasks         []Task
 }
 
 var nfContext = NFContext{}
@@ -57,6 +63,7 @@ func InitNfContext() {
 		"Henry":  "Henderson",
 		"Martha": "Marriott",
 	}
+	nfContext.Tasks = make([]Task, 0)
 }
 
 func GetSelf() *NFContext {
