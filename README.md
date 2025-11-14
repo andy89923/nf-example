@@ -28,3 +28,4 @@ make
 ```sh
 > go test -v ./...
 ```
+Small update to trigger CI
