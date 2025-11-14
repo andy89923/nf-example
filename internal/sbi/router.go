@@ -37,15 +37,19 @@ func applyRoutes(group *gin.RouterGroup, routes []Route) {
 }
 
 func newRouter(s *Server) *gin.Engine {
-	router := logger_util.NewGinWithLogrus(logger.GinLog)
+    router := logger_util.NewGinWithLogrus(logger.GinLog)
 
-	defaultGroup := router.Group("/default")
-	applyRoutes(defaultGroup, s.getDefaultRoute())
+    defaultGroup := router.Group("/default")
+    applyRoutes(defaultGroup, s.getDefaultRoute())
 
-	spyFamilyGroup := router.Group("/spyfamily")
-	applyRoutes(spyFamilyGroup, s.getSpyFamilyRoute())
+    spyFamilyGroup := router.Group("/spyfamily")
+    applyRoutes(spyFamilyGroup, s.getSpyFamilyRoute())
 
-	return router
+    // Nuevo servicio para el Lab 6
+    lab6Group := router.Group("/lab6")
+    applyRoutes(lab6Group, s.getLab6Route())
+
+    return router
 }
 
 func bindRouter(nf app.App, router *gin.Engine, tlsKeyLogPath string) (*http.Server, error) {
